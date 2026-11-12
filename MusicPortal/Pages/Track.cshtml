@@ -1,0 +1,35 @@
+﻿@page
+@model MusicPortal.Pages.TrackModel
+@{
+    ViewData["Title"] = "Деталі треку";
+
+    // ЗАВДАННЯ ViewData: Передаємо дані в макет (_Layout) для нижнього плеєра
+    ViewData["TrackName"] = "Не зупиняйся";
+    ViewData["Artist"] = "IFOUND";
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary">Детальна інформація про трек</h2>
+
+    <div class="card shadow-sm mt-3" style="max-width: 450px;">
+        <!-- Заглушка для обкладинки -->
+        <div class="bg-dark text-white text-center py-5 rounded-top">
+            <h3 class="text-info">🎵 Обкладинка альбому</h3>
+        </div>
+        <div class="card-body">
+            <h4 class="card-title text-success fw-bold">@ViewData["Artist"]</h4>
+            <h5 class="card-subtitle mb-4 text-muted">@ViewData["TrackName"]</h5>
+            <p class="card-text"><strong>Жанр:</strong> Worship</p>
+            <p class="card-text"><strong>Тривалість:</strong> 04:12</p>
+            <a asp-page="/Index" class="btn btn-outline-secondary mt-2">← Повернутися до списку</a>
+        </div>
+    </div>
+</div>
+
+<!-- ЗАВДАННЯ Section: Виводимо повідомлення в консоль браузера -->
+@section Scripts {
+    <script>
+        console.log("Відтворення треку почалося...");
+        alert("Трек 'Не зупиняйся' від IFOUND завантажено. Зверніть увагу на плеєр внизу екрану!");
+    </script>
+}

@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MusicPortal</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand text-primary fw-bold" asp-area="" asp-page="/Index">MusicPortal</a>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Головна (Треки)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/PlaylistCalc">Калькулятор</a>
+                        </li>
+
+                        <li class="nav-item fw-bold ms-4"><span class="nav-link text-muted">Жанри:</span></li>
+                        <li class="nav-item"><a class="nav-link text-info" href="#">Worship</a></li>
+                        <li class="nav-item"><a class="nav-link text-info" href="#">Християнський рок</a></li>
+                        <li class="nav-item"><a class="nav-link text-info" href="#">Інді-поп</a></li>
+                        <li class="nav-item"><a class="nav-link text-info" href="#">Госпел</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted bg-light mt-auto">
+        <div class="container d-flex justify-content-between align-items-center py-2">
+            <div>
+                &copy; 2026 - MusicPortal - Лабораторна робота, Варіант 11, Виконав: Мілорадов Нікіта, 731
+            </div>
+
+            @if (ViewData["Artist"] != null)
+            {
+                <div class="audio-player p-3 border rounded bg-white shadow-sm" style="width: 400px;">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                            <span class="fw-bold text-dark">@ViewData["Artist"]</span>
+                            <span>—</span>
+                            <em class="text-secondary">@ViewData["TrackName"]</em>
+                        </div>
+                        <div>
+                            <button id="btnPlay" class="btn btn-sm btn-success">▶ Play</button>
+                            <button id="btnPause" class="btn btn-sm btn-warning d-none">⏸ Pause</button>
+                        </div>
+                    </div>
+
+                    <!-- Імітація повзунка з часом -->
+                    <div class="d-flex align-items-center mt-2">
+                        <small id="timeCurrent" class="text-muted me-2" style="min-width: 40px;">00:00</small>
+                        <div class="progress flex-grow-1" style="height: 6px;">
+                            <div id="timeProgress" class="progress-bar bg-success" role="progressbar" style="width: 0%;"></div>
+                        </div>
+                        <small class="text-muted ms-2" style="min-width: 40px;">04:12</small>
+                    </div>
+                </div>
+            }
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Скрипт для "оживлення" нашого фейкового плеєра -->
+    <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                let btnPlay = document.getElementById("btnPlay");
+                let btnPause = document.getElementById("btnPause");
+                let timeProgress = document.getElementById("timeProgress");
+                let timeCurrent = document.getElementById("timeCurrent");
+
+                if (btnPlay) {
+                    let timer;
+                    let currentSeconds = 0;
+                    let totalSeconds = 252; // 4 хвилини 12 секунд (довжина нашого треку)
+
+                    // Натискання на Play
+                    btnPlay.addEventListener("click", function() {
+                        btnPlay.classList.add("d-none"); // ховаємо Play
+                        btnPause.classList.remove("d-none"); // показуємо Pause
+
+                        timer = setInterval(function() {
+                            if (currentSeconds >= totalSeconds) {
+                                clearInterval(timer);
+                                return;
+                            }
+                            currentSeconds++;
+
+                            // Рухаємо повзунок (вираховуємо відсотки)
+                            let percent = (currentSeconds / totalSeconds) * 100;
+                            timeProgress.style.width = percent + "%";
+
+                            // Оновлюємо текст часу (хвилин:секунд)
+                            let min = Math.floor(currentSeconds / 60);
+                            let sec = currentSeconds % 60;
+                            timeCurrent.innerText = "0" + min + ":" + (sec < 10 ? "0" + sec : sec);
+                        }, 1000); // 1000 мс = 1 секунда
+                    });
+
+                    // Натискання на Pause
+                    btnPause.addEventListener("click", function() {
+                        btnPause.classList.add("d-none");
+                        btnPlay.classList.remove("d-none");
+                        clearInterval(timer); // зупиняємо таймер
+                    });
+                }
+            });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,41 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Головна - Топ Треків";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-primary">Топ-10 сучасних українських християнських пісень</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">#</th>
+                        <th>Виконавець</th>
+                        <th>Назва треку</th>
+                        <th>Жанр</th>
+                        <th>Тривалість</th>
+                        <th class="text-center">Дія</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var song in Model.Songs)
+                    {
+                        <tr>
+                            <td class="ps-4 text-muted">@song.Id</td>
+                            <td><strong>@song.Artist</strong></td>
+                            <td>@song.Title</td>
+                            <td><span class="badge bg-secondary">@song.Genre</span></td>
+                            <td class="text-muted">@song.Duration</td>
+                            <td class="text-center">
+                                <a asp-page="/Track" class="btn btn-sm btn-outline-success">Слухати</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
