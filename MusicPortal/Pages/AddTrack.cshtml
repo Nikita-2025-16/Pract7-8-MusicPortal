@@ -1,0 +1,56 @@
+﻿@page
+@model MusicPortal.Pages.AddTrackModel
+@{
+    ViewData["Title"] = "Запропонувати трек";
+}
+
+<div class="container mt-4 mb-5">
+    <h2 class="text-primary mb-4">Запропонувати новий трек</h2>
+
+    <!-- Вивід успішного результату -->
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success fw-bold shadow-sm">
+            @Model.SuccessMessage
+        </div>
+    }
+
+    <div class="card shadow-sm" style="max-width: 600px;">
+        <div class="card-body">
+            <!-- Вимога 1: Форма виключно через Tag Helpers -->
+            <form method="post">
+                <div class="mb-3">
+                    <label asp-for="Artist" class="form-label">Виконавець</label>
+                    <input asp-for="Artist" class="form-control" placeholder="Наприклад: IFOUND" />
+                    <!-- Вивід помилок під полем -->
+                    <span asp-validation-for="Artist" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">Назва треку</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ReleaseYear" class="form-label">Рік випуску</label>
+                    <input asp-for="ReleaseYear" class="form-control" placeholder="Наприклад: 2024" />
+                    <span asp-validation-for="ReleaseYear" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ContactEmail" class="form-label">Ваш Email для зворотного зв'язку</label>
+                    <input asp-for="ContactEmail" class="form-control" placeholder="example@mail.com" />
+                    <span asp-validation-for="ContactEmail" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-2">Відправити трек</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Підключення клієнтської валідації -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
